@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2023 Filipe Laíns
+#
+# SPDX-License-Identifier: MIT
+
+coverage:
+  status:
+    patch:
+      default:
+        informational: true
+comment: false

@@ -1,0 +1,104 @@
+# SPDX-FileCopyrightText: 2023 Filipe Laíns
+#
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = ['flit-core >= 3.4']
+build-backend = 'flit_core.buildapi'
+
+[project]
+name = 'ffy00.packaging'
+version = '0.1.0'
+description = 'Collection of packaging related utilities'
+readme = 'README.md'
+requires-python = '>= 3.7'
+license.file = 'LICENSE'
+authors = [
+  { name = 'Filipe Laíns', email = 'lains@riseup.net' },
+]
+classifiers = [
+  'License :: OSI Approved :: MIT License',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.7',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+]
+urls.homepage = 'https://github.com/FFY00/ffy00.packaging'
+urls.changelog = 'https://pypa-build.readthedocs.io/en/stable/changelog.html'
+
+dependencies = [
+  'packaging >= 19.0',
+  'importlib-metadata >= 0.22; python_version < "3.8"',
+  'tomli >= 1.1.0; python_version < "3.11"',
+]
+
+[project.optional-dependencies]
+docs = [
+  'furo >= 2021.08.31',
+  'sphinx ~= 4.0',
+  'sphinx-autodoc-typehints >= 1.10',
+  'sphinx-copybutton >= 0.5.0',
+  'sphinx-design >= 0.1.0',
+  'sphinx-autobuild',
+  'sphinx_issues >= 3.0.0',
+  'sphinxcontrib-spelling >= 7.0.0',
+  'sphinxext-opengraph >= 0.7.0',
+]
+test = [
+  'pytest >= 6.2.4',
+  'pytest-cov >= 2.12',
+  'pytest-mock >= 2',
+]
+typing = [
+  'importlib-metadata >= 5.1',
+  'mypy == 0.991',
+]
+
+[tool.coverage.html]
+show_contexts = true
+
+[tool.pytest.ini_options]
+addopts = ['--strict-config', '--strict-markers']
+log_cli_level = 'info'
+testpaths = ['tests']
+xfail_strict = true
+
+[tool.mypy]
+python_version = '3.7'
+strict = true
+show_error_codes = true
+enable_error_code = ['ignore-without-code', 'truthy-bool', 'redundant-expr']
+ignore_missing_imports = true
+
+[tool.black]
+line-length = 127
+skip-string-normalization = true
+target-version = ['py311', 'py310', 'py39', 'py38', 'py37']
+
+[tool.ruff]
+line-length = 127
+exclude = []
+select = [
+  'B',    # flake8-bugbear
+  'C4',   # flake8-comprehensions
+  'C9',   # mccabe
+  'E',    # pycodestyle
+  'F',    # pyflakes
+  'PGH',  # pygrep-hooks
+  'RUF',  # ruff
+  'UP',   # pyupgrade
+  'W',    # pycodestyle
+  'W',    # pycodestyle
+  'YTT',  # flake8-2020
+]
+target-version = 'py37'
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+lines-between-types = 1
+lines-after-imports = 2

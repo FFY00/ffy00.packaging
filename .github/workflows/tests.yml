@@ -1,0 +1,102 @@
+# SPDX-FileCopyrightText: 2023 Filipe Laíns
+#
+# SPDX-License-Identifier: MIT
+name: tests
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+      - release-*
+    paths-ignore:
+      - docs/**
+      - CHANGELOG.rst
+      - LICENSE
+      - README.md
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: 1
+  PY_COLORS: 1
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    env:
+      PYTEST_ADDOPTS: "--showlocals -vv"
+    strategy:
+      fail-fast: false
+      matrix:
+        py:
+          - "pypy-3.7"
+          - "pypy-3.8"
+          - "pypy-3.9"
+          - "3.12-dev"
+          - "3.11"
+          - "3.10"
+          - "3.9"
+          - "3.8"
+          - "3.7"
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.py }}
+
+      - name: Install
+        run: python -m pip install --disable-pip-version-check install .[test]
+
+      - name: Run tests
+        run: >-
+          python -m pytest --cov --cov-report=xml:coverage-${{ matrix.py }}.xml
+
+      - uses: codecov/codecov-action@v3
+        if: always()
+        env:
+          PYTHON: ${{ matrix.py }}
+        with:
+          flags: tests
+          env_vars: PYTHON
+          name: ${{ matrix.py }}
+
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Install mypy
+        run: python -m pip --disable-pip-version-check install .[typing]
+
+      - name: Run mypy
+        run: mypy -p ffy00.packaging
+
+  # https://github.com/marketplace/actions/alls-green#why
+  required-checks-pass: # This job does nothing and is only used for the branch protection
+    if: always()
+
+    needs:
+      - pytest
+      - mypy
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
