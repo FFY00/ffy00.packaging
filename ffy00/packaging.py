@@ -18,6 +18,9 @@ else:
     import importlib_metadata
 
 
+__version__ = '0.1.0'
+
+
 # Originally taken from the pypa/build project
 # https://github.com/pypa/build/blob/e496fe6342f0e4729b69d0ea93eef529f27875a6/src/build/_util.py#L16
 def check_dependency(

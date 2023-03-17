@@ -7,7 +7,7 @@ Change-log
 ++++++++++
 
 
-Unreleased
-==========
+0.1.0 (17-03-2023)
+==================
 
-- TODO
+- Add :meth:`ffy00.packaging.check_dependency`
