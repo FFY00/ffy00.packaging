@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 [build-system]
-requires = ['flit-core >= 3.4']
-build-backend = 'flit_core.buildapi'
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'ffy00.packaging'
@@ -56,6 +56,8 @@ typing = [
   'importlib-metadata >= 5.1',
   'mypy == 0.991',
 ]
+
+[tool.setuptools.packages.find]
 
 [tool.coverage.html]
 show_contexts = true
